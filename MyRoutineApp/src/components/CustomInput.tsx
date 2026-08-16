@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { KeyboardTypeOptions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardTypeOptions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"; // ! 
 
 type CustomInputProps = {
   onChangeText: (text: string) => void;
@@ -30,7 +30,7 @@ export default function CustomInput({
         ? "number-pad"
         : "default";
 
-  // Función de validación
+  // !! 
   const getError = (): string | null => {
     if (type === "email" && value.length > 0 && !value.includes("@")) {
       return "Correo inválido";
@@ -44,6 +44,8 @@ export default function CustomInput({
   };
 
   const error = getError();
+
+  // !!
 
   return (
     <View style={styles.wrapper}>

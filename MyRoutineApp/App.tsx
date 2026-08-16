@@ -6,7 +6,7 @@ import CustomInput from './src/components/CustomInput';
 
 export default function App() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // 👈 nuevo estado
+  const [password, setPassword] = useState(""); // nuevo estado para la contraseña
 
   return (
     <View style={styles.container}>
@@ -18,8 +18,8 @@ export default function App() {
         type='email'     
       />
       <CustomInput 
-        onChangeText={setPassword}   // 👈 corregido
-        value={password}             // 👈 corregido
+        onChangeText={setPassword}   // !
+        value={password}             // !
         placeholder={'Ingresa tu contraseña'} 
         type='password'     
       />
