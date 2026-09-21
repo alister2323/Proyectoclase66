@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { KeyboardTypeOptions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"; // ! 
+import { KeyboardTypeOptions, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 type CustomInputProps = {
   onChangeText: (text: string) => void;
@@ -15,42 +15,25 @@ export default function CustomInput({
   placeholder,
   type = "default",
 }: CustomInputProps) {
-  const [isSecureText, setIsSecureText] = useState(type === "password");
+    const [isSecureText, setIsSecureText] = useState(type === "password");
 
-  const isPasswordField = type === "password";
+    const isPasswordField = type === "password";
 
-  const iconName: (typeof MaterialIcons)["name"] | undefined =
-    type === "password" ? "lock" :
-      type === "email" ? "alternate-email" : undefined;
+    const iconName: (typeof MaterialIcons)["name"] | undefined = 
+        type === "password" ? "lock" : 
+            type === "email" ? "alternate-email" : undefined
 
-  const keyboardType: KeyboardTypeOptions =
+    const keyboardType: KeyboardTypeOptions =
     type === "email"
       ? "email-address"
       : type === "number"
         ? "number-pad"
         : "default";
 
-  // !! 
-  const getError = (): string | null => {
-    if (type === "email" && value.length > 0 && !value.includes("@")) {
-      return "Correo inválido";
-    }
-
-    if (type === "password" && value.length > 0 && value.length < 4) {
-      return "La contraseña es débil";
-    }
-
-    return null;
-  };
-
-  const error = getError();
-
-  // !!
-
   return (
     <View style={styles.wrapper}>
-      <View style={[styles.inputContainer, error && styles.inputError]}>
-        <MaterialIcons name={iconName as any} size={22} />
+      <View style={styles.inputContainer}>
+       <MaterialIcons name={iconName as any} size={22} />
         <TextInput
           style={styles.input}
           onChangeText={onChangeText}
@@ -59,18 +42,13 @@ export default function CustomInput({
           keyboardType={keyboardType}
           secureTextEntry={isSecureText}
         />
-        {isPasswordField && (
-          <TouchableOpacity
-            onPress={() => {
-              setIsSecureText(!isSecureText);
-            }}
-          >
-            <Ionicons name="eye" size={22} />
-          </TouchableOpacity>
-        )}
+       { isPasswordField && <TouchableOpacity
+            onPress={()=>{
+                setIsSecureText(!isSecureText);
+            }}>
+            <Ionicons name="eye" size={22}/>
+        </TouchableOpacity>}
       </View>
-
-      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
@@ -80,27 +58,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputContainer: {
-    backgroundColor: 'lightgray',
+    backgroundColor:'lightgray',
+    //distribucion de componentes con flexbox
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: 9,
+    borderRadius: 9, 
     borderColor: 'gray',
     borderWidth: 1,
     paddingLeft: 20,
     paddingRight: 20,
+
   },
   input: {
     width: "70%",
-  },
-  inputError: {
-    borderColor: 'red',
-    borderWidth: 1.5,
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
   },
 });
