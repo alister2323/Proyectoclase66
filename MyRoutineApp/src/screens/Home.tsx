@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { View, Text,StyleSheet  } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { RootStackParamList } from "../navigation/StackNavigator";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { TabsParamList } from "../navigation/TabsNavigator";
 import CustomButton from "../components/CustomButton";
 import { navigationRef } from "../navigation/NavigationService";
+import { useTheme } from "../contexts/ThemeContext";
 
 type NestedProps = CompositeScreenProps<
   BottomTabScreenProps<TabsParamList, "HomeTab">,
@@ -14,65 +15,53 @@ type NestedProps = CompositeScreenProps<
 >;
 
 export default function Home({ navigation, route }: NestedProps) {
-  //extraccion de propiedad de parametros de ruta por medio de destructuring
   const { email } = route.params;
+  const { theme, isDark } = useTheme();
+
+  const styles = createStyles(theme, isDark);
 
   const handleUserSettings = () => {
     navigation.navigate("Settings");
   };
 
   const handleLogout = () => {
-    if (navigationRef.isReady()){
-        navigationRef.reset({
-            // es un arreglo para cual cada objeto representa una ruta en el nuevo historial del stack
-            routes: [
-                {name: 'LoginScreen'}
-            ], 
-            index: 0,
-        })
+    if (navigationRef.isReady()) {
+      navigationRef.reset({
+        routes: [{ name: "LoginScreen" }],
+        index: 0,
+      });
     }
   };
 
   const handleNavigate = () => {
-    navigation.navigate('LoginScreen');
+    navigation.navigate("LoginScreen");
   };
 
   return (
-    <View style={styles.container} >
-      <Text style={styles.welcome}>Bienvenido, {email} </Text>
-
-      <CustomButton
-        title="Ir a Preferencias de Usuario"
-        onPress={handleUserSettings}
-        variant="primary"
-      />
-      <CustomButton
-        title="Cerrar Sesion"
-        variant="secondary"
-        onPress={handleLogout}
-      />
-      <CustomButton
-        title="Ir atras"
-        variant="tertiary"
-        onPress={handleNavigate}
-      />
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Bienvenido, {email}</Text>
+      <CustomButton title="Ir a Preferencias de Usuario" onPress={handleUserSettings} variant="primary" />
+      <CustomButton title="Cerrar Sesion" variant="secondary" onPress={handleLogout} />
+      <CustomButton title="Ir atras" variant="tertiary" onPress={handleNavigate} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { padding: 24, paddingBottom: 40, alignItems: "center" },
-  welcome: {
-    fontSize: 18,
-    fontWeight: "600",
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    marginTop: 24,
-    marginBottom: 12,
-    alignSelf: "flex-start",
-  },
-});
+const createStyles = (theme: any, isDark: boolean) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 24,
+      paddingBottom: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.background,
+    },
+    welcome: {
+      fontSize: 18,
+      fontWeight: "600",
+      textAlign: "center",
+      marginBottom: 20,
+      color: theme.text,
+    },
+  });
